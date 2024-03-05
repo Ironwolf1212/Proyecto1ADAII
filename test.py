@@ -4,7 +4,8 @@ class Patch:
         self.irriTime = irriTime
         self.priority = priority
 
-schedule = [0,1,4,2,3]
+#schedule = [0,1,4,2,3]
+#schedule = [2,1,4,3,0]
 def calculateIrriStart(ranch, schedule):
     timings = [0] * len(ranch)
     time = 0
@@ -24,14 +25,35 @@ def calculateCost(ranch, timings):
         i+=1
     return cost
 
+#Calcular el promedio de irriTime  de ranch
+def calculateAvg(ranch):
+    avg = 0
+    for patch in ranch:
+        avg += int(patch.irriTime)
+    return avg/len(ranch)
+
+def calc_Schedule(ranch, average_it):
+    schedule = []
+    for patch in ranch:
+        if int(patch.survTime) > average_it:
+            schedule.append(ranch.index(patch))
+    for patch in ranch:
+        if int(patch.survTime) <= average_it:
+            schedule.append(ranch.index(patch))
+    return schedule
+
+
+
 with open ('Input.txt') as input:
     ranch = []
     input = input.readlines()[1:]
     for line in input:
         data = line.split(",")
         ranch.append(Patch(data[0],data[1],data[2]))
-    
 
+average_it = calculateAvg(ranch)
+schedule = calc_Schedule(ranch, average_it)
+print(schedule)
     
 #with open ('Output.txt', 'w') as output:
 #    for answer in answers:

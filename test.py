@@ -4,46 +4,44 @@ class Patch:
         self.irriTime = irriTime
         self.priority = priority
 
+schedule = [0,1,4,2,3]
 def calculateIrriStart(ranch, schedule):
-    timings = [None,None,None,None,None]
+    timings = [0] * len(ranch)
     time = 0
     for patch in schedule:
         timings[patch] = time
-        time += ranch[patch].irriTime
+        time += int(ranch[patch].irriTime)
     return(timings)
 def calculateCost(ranch, timings):
     cost = 0
     i = 0
     for patch in ranch:
-        if (patch.survTime - patch.irriTime) > timings[i]:
-            cost += patch.survTime - (patch.irriTime + timings[i])
+        if (int(patch.survTime) - int(patch.irriTime)) > timings[i]:
+            cost += int(patch.survTime) - (int(patch.irriTime) + timings[i])
         else:
-            cost += patch.priority * ((timings[i] + patch.irriTime) - patch.survTime)
+            cost += int(patch.priority) * ((timings[i] + int(patch.irriTime)) - int(patch.survTime))
         #print(cost)
         i+=1
     return cost
 
 with open ('Input.txt') as input:
-    problems = input.readlines()
-    print(problems)
-    for line in problems:
-        ranch = line[0]
-        schedule = line[1]
-        #print(ranch)
-        #print (schedule)
-        timings = calculateIrriStart(ranch,schedule)
-        answers.append(calculateCost(ranch,timings))
-        #print(calculateCost(ranch,timings))
+    ranch = []
+    input = input.readlines()[1:]
+    for line in input:
+        data = line.split(",")
+        ranch.append(Patch(data[0],data[1],data[2]))
+    
 
-with open ('Output.txt', 'w') as output:
-    for answer in answers:
-        output.write(answer+'\n')
+    
+#with open ('Output.txt', 'w') as output:
+#    for answer in answers:
+#        output.write(answer+'\n')
 
 #ranch = [Patch(10, 3, 4), Patch(5, 3, 3), Patch(2, 2, 1), Patch(8, 1, 1), Patch(6, 4, 2)]
 
-#schedule = [0,1,4,2,3]
+
 #schedule = [0,3,10,12,6]
 
 
-#timings = calculateIrriStart(ranch,schedule)
-#print(calculateCost(ranch,timings))
+timings = calculateIrriStart(ranch,schedule)
+print(calculateCost(ranch,timings))

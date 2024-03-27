@@ -1,4 +1,4 @@
-import copy
+
 import Voraz
 
 class Plantacion:
@@ -28,8 +28,8 @@ class Plantacion:
         self.tiempoRiego = tiempoRiego
         self.prioridad = prioridad
 
-    def __str__(self):
-        return f"Plantacion({self.tiempoSuperv}, {self.tiempoRiego}, {self.prioridad})"
+    def __repr__(self):
+        return f'Plantacion({self.tiempoSuperv}, {self.tiempoRiego}, {self.prioridad})'
 
 def calcularCostoOrden(plantaciones, orden):
     tiempo_elapsado = 0
@@ -48,4 +48,4 @@ with open('Input.txt') as input:
         finca.append(Plantacion(datos[0], datos[1], datos[2]))
 
 orden = Voraz.ordenOptimo(finca)
-print(orden)
+#print(orden)

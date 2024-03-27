@@ -1,3 +1,4 @@
+import copy
 def costoRiego(plantacion, tiempo_transcurrido):
     """
     Calcula el costo de riego de una plantación en función del tiempo transcurrido.
@@ -39,6 +40,7 @@ def ordenOptimo(plantaciones):
     """
     tiempo_transcurrido = 0
     orden = []
+    plantacionesBackup = copy.copy(plantaciones)
     while plantaciones:
         mejor_costo = float('inf')
         mejor_plantacion = None
@@ -50,7 +52,15 @@ def ordenOptimo(plantaciones):
         orden.append(mejor_plantacion)
         plantaciones.remove(mejor_plantacion)
         tiempo_transcurrido += int(mejor_plantacion.tiempoRiego)
-    return orden
+    ordenFinal = [0]*len(orden)
+    for i in range(len(orden)):
+        #print("El elemento ",i," es: ",orden[i])
+        #print("El elemento de backup ",i," es: ",orden[i])
+        
+        print("insertaré ", plantacionesBackup.index(orden[i]), "En backup",i)
+        ordenFinal[i] = plantacionesBackup.index(orden[i])
+    print("El orden final es: ", ordenFinal)
+    return ordenFinal
 
 # Ejemplo de uso
 '''

@@ -1,4 +1,4 @@
-def costo_riego(plantacion, tiempo_transcurrido):
+def costoRiego(plantacion, tiempo_transcurrido):
     """
     Calcula el costo de riego de una plantación en función del tiempo transcurrido.
 
@@ -13,14 +13,16 @@ def costo_riego(plantacion, tiempo_transcurrido):
         int: El costo de riego de la plantación.
 
     """
-    tiempo_supervivencia, tiempo_regado, prioridad = plantacion
-    if tiempo_transcurrido + tiempo_regado <= tiempo_supervivencia:
-        return tiempo_supervivencia - (tiempo_transcurrido + tiempo_regado)
+    tiempo_supervivencia = plantacion.tiempoSuperv
+    tiempo_regado = plantacion.tiempoRiego
+    prioridad = plantacion.prioridad
+    if int(tiempo_transcurrido) + int(tiempo_regado) <= int(tiempo_supervivencia):
+        return int(tiempo_supervivencia) - (int(tiempo_transcurrido) + int(tiempo_regado))
     else:
-        return prioridad * ((tiempo_transcurrido + tiempo_regado) - tiempo_supervivencia)
+        return prioridad * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
 
 
-def orden_optimo(plantaciones):
+def ordenOptimo(plantaciones):
     """
     Calcula el orden óptimo de riego de las plantaciones.
 
@@ -41,16 +43,17 @@ def orden_optimo(plantaciones):
         mejor_costo = float('inf')
         mejor_plantacion = None
         for plantacion in plantaciones:
-            costo = costo_riego(plantacion, tiempo_transcurrido)
-            if costo < mejor_costo:
+            costo = costoRiego(plantacion, tiempo_transcurrido)
+            if int(costo) < float(mejor_costo):
                 mejor_costo = costo
                 mejor_plantacion = plantacion
         orden.append(mejor_plantacion)
         plantaciones.remove(mejor_plantacion)
-        tiempo_transcurrido += mejor_plantacion[1]
+        tiempo_transcurrido += int(mejor_plantacion.tiempoRiego)
     return orden
 
 # Ejemplo de uso
+'''
 plantaciones = [
     (10, 3, 4),
     (5, 3, 3),
@@ -63,3 +66,4 @@ orden = orden_optimo(plantaciones)
 print("Orden optimo de riego:")
 for plantacion in orden:
     print(plantacion)
+'''

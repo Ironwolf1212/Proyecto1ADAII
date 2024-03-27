@@ -1,4 +1,4 @@
-
+import copy
 import Voraz
 
 class Plantacion:
@@ -34,18 +34,19 @@ class Plantacion:
 def calcularCostoOrden(plantaciones, orden):
     tiempo_elapsado = 0
     costo_total = 0
-    for i in orden:
-        costo_total += costo_riego(plantaciones[i], tiempo_elapsado)
-        tiempo_elapsado += plantaciones[i].irriTime
+    for i in range(len(orden)):
+        costo_total += int(Voraz.costoRiego(plantaciones[i], tiempo_elapsado))
+        tiempo_elapsado += int(plantaciones[i].tiempoRiego)
     return costo_total
 
 #Lectura del archivo Input.txt y creación de la lista de objetos Plantacion
-with open('Input.txt') as input:
+with open('BateriaPruebas/Prueba4.txt') as input:
     finca = []
     entrada = input.readlines()[1:]
     for linea in entrada:
         datos = linea.split(",")
         finca.append(Plantacion(datos[0], datos[1], datos[2]))
 
-orden = Voraz.ordenOptimo(finca)
-#print(orden)
+orden = Voraz.ordenOptimo(copy.copy(finca))
+costo = calcularCostoOrden(finca,orden)
+print(orden," cuesta ",costo)

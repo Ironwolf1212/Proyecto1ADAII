@@ -20,7 +20,7 @@ def costoRiego(plantacion, tiempo_transcurrido):
     if int(tiempo_transcurrido) + int(tiempo_regado) <= int(tiempo_supervivencia):
         return int(tiempo_supervivencia) - (int(tiempo_transcurrido) + int(tiempo_regado))
     else:
-        return prioridad * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
+        return int(prioridad) * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
 
 
 def ordenOptimo(plantaciones):
@@ -52,14 +52,11 @@ def ordenOptimo(plantaciones):
         orden.append(mejor_plantacion)
         plantaciones.remove(mejor_plantacion)
         tiempo_transcurrido += int(mejor_plantacion.tiempoRiego)
+    #Se crea un arreglo del mismo tamaño que orden
     ordenFinal = [0]*len(orden)
+    #Se itera orden y se almacena el índice de cada elemento dentro de plantacionesBackup y orden en ordenFinal
     for i in range(len(orden)):
-        #print("El elemento ",i," es: ",orden[i])
-        #print("El elemento de backup ",i," es: ",orden[i])
-        
-        print("insertaré ", plantacionesBackup.index(orden[i]), "En backup",i)
         ordenFinal[i] = plantacionesBackup.index(orden[i])
-    print("El orden final es: ", ordenFinal)
     return ordenFinal
 
 # Ejemplo de uso

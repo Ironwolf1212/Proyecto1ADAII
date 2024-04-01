@@ -1,5 +1,6 @@
 import copy
 import Voraz
+import Dinamica
 
 class Plantacion:
     """
@@ -40,13 +41,16 @@ def calcularCostoOrden(plantaciones, orden):
     return costo_total
 
 #Lectura del archivo Input.txt y creación de la lista de objetos Plantacion
-with open('BateriaPruebas/Prueba4.txt') as input:
+with open('BateriaPruebas/Prueba1.txt') as input:
     finca = []
     entrada = input.readlines()[1:]
     for linea in entrada:
         datos = linea.split(",")
         finca.append(Plantacion(datos[0], datos[1], datos[2]))
 
-orden = Voraz.ordenOptimo(copy.copy(finca))
-costo = calcularCostoOrden(finca,orden)
-print(orden," cuesta ",costo)
+#orden = Voraz.ordenOptimo(copy.copy(finca))
+#costo = calcularCostoOrden(finca,orden)
+#print(orden," cuesta ",costo)
+
+resultado = Dinamica.costoMinimo(finca)
+print("El costo minimo de regar todas las plantaciones es:", resultado)

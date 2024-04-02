@@ -58,19 +58,3 @@ def ordenOptimo(plantaciones):
     for i in range(len(orden)):
         ordenFinal[i] = plantacionesBackup.index(orden[i])
     return ordenFinal
-
-# Ejemplo de uso
-'''
-plantaciones = [
-    (10, 3, 4),
-    (5, 3, 3),
-    (2, 2, 1),
-    (8, 1, 1),
-    (6, 4, 2)
-]
-
-orden = orden_optimo(plantaciones)
-print("Orden optimo de riego:")
-for plantacion in orden:
-    print(plantacion)
-'''

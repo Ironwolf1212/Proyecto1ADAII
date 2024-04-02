@@ -33,12 +33,13 @@ class Plantacion:
         return f'Plantacion({self.tiempoSuperv}, {self.tiempoRiego}, {self.prioridad})'
 
 def calcularCostoOrden(plantaciones, orden):
-    tiempo_elapsado = 0
-    costo_total = 0
+    tiempoTranscurrido = 0
+    costoTotal = 0
     for i in range(len(orden)):
-        costo_total += int(Voraz.costoRiego(plantaciones[i], tiempo_elapsado))
-        tiempo_elapsado += int(plantaciones[i].tiempoRiego)
-    return costo_total
+        costoTotal += int(Voraz.costoRiego(plantaciones[orden[i]], tiempoTranscurrido))
+        print(costoTotal)
+        tiempoTranscurrido += int(plantaciones[orden[i]].tiempoRiego)
+    return costoTotal
 
 #Lectura del archivo Input.txt y creación de la lista de objetos Plantacion
 with open('BateriaPruebas/Prueba1.txt') as input:
@@ -52,5 +53,11 @@ with open('BateriaPruebas/Prueba1.txt') as input:
 #costo = calcularCostoOrden(finca,orden)
 #print(orden," cuesta ",costo)
 
-resultado = Dinamica.costoMinimo(finca)
-print("El costo minimo de regar todas las plantaciones es:", resultado)
+#resultado = Dinamica.costoMinimo(finca)
+#print("El costo minimo de regar todas las plantaciones es:", resultado)
+orden = [2,0,1]
+#costo = calcularCostoOrden([Plantacion(10,3,4)],[0])
+#costo = calcularCostoOrden([Plantacion(5,3,3)],[0])
+costo = calcularCostoOrden([Plantacion(2,2,1)],[0])
+costo = calcularCostoOrden([Plantacion(5,3,3),Plantacion(10,3,4),Plantacion(2,2,1)],orden)
+print(orden," cuesta ",costo)

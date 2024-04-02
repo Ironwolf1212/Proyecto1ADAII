@@ -28,12 +28,14 @@ def costoMinimo(plantaciones):
 
     for i in range(1, n + 1):
         tiempoTranscurrido = 0
-        for j in range(1, i+1):
-            tiempoTranscurrido += int(plantaciones[j - 1].tiempoSuperv)
-            costo = costoRiego(plantaciones[j - 1], tiempoTranscurrido)
+        for j in range(i):
+            #tiempoTranscurrido += int(plantaciones[j - 1].tiempoSuperv)
+            tiempoTranscurrido = sum(int(planta.tiempoSuperv) for planta in plantaciones[j:i])
+            #costo = costoRiego(plantaciones[j - 1], tiempoTranscurrido)
+            costo = sum(costoRiego(planta, tiempoTranscurrido) for planta in plantaciones[j:i])
             print("El costoo ",j," es ", costo)
             print("Comparando ",dp[i]," con ",dp[j-1] + costo)
-            dp[i] = min(dp[i], dp[j - 1] + costo)
+            dp[i] = min(dp[i], dp[j] + costo)
         print("El costo ",i," es ",dp[i])
 
     return dp[n]

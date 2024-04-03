@@ -57,4 +57,4 @@ def ordenOptimo(plantaciones):
     #Se itera orden y se almacena el índice de cada elemento dentro de plantacionesBackup y orden en ordenFinal
     for i in range(len(orden)):
         ordenFinal[i] = plantacionesBackup.index(orden[i])
-    return ordenFinal
+    return ordenFinal, mejor_costo

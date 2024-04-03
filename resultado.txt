@@ -1,0 +1,7 @@
+Costo: 14
+Orden de riego Optimo:
+2
+1
+0
+3
+4

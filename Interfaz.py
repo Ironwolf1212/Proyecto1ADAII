@@ -4,6 +4,8 @@ from openInput import formatInput
 from fuerzaBruta import calcular_riego_optimo
 from Voraz import ordenOptimo
 import copy
+from tkinter import messagebox
+
 #from Dinamica import riegoOptimo
 
 root = Tk()
@@ -35,11 +37,21 @@ def home():
 
 def calcularVoraz(finca, result_window):
     print("Finca de entrada: ",finca)
-    resultado = ordenOptimo(finca)
+    resultado, costo = ordenOptimo(finca)
     print(resultado)
+    result_lbl_1 = Label(result_window, text="Costo: " + str(costo))
+    result_lbl_1.config(font=("Arial", 20))
+    result_lbl_1.pack()
     result_lbl = Label(result_window, text="Orden de riego Optimo: " + str(resultado))    
     result_lbl.config(font=("Arial", 20))
     result_lbl.pack()
+
+    with open("resultado.txt", "w") as f:
+        f.write("Costo: " + str(costo) + "\n")
+        f.write("Orden de riego Optimo:\n")
+        for riego in resultado:
+            f.write(str(riego) + "\n")
+    messagebox.showinfo("Archivo guardado", "La solución se ha guardado en el archivo 'resultado.txt'")
 
 def formatearTextoFinca(finca):
     texto = ""

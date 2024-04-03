@@ -45,7 +45,7 @@ def costoMinimo(plantaciones):
 def ordenOptimo(plantaciones):
     print("Entrada: ",plantaciones)
     plantaciones2 = [0] * len(plantaciones)
-    orden = copy.copy(plantaciones)
+    orden = []
     menorCosto = float('inf')
     for i in range(len(plantaciones)):
         for plantacion in plantaciones:

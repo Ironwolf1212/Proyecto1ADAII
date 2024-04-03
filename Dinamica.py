@@ -1,3 +1,5 @@
+import copy
+
 def costoRiego(plantacion, tiempo_transcurrido):
     """
     Calcula el costo de riego de una plantacion en funcion del tiempo transcurrido.
@@ -39,6 +41,33 @@ def costoMinimo(plantaciones):
         print("El costo ",i," es ",dp[i])
 
     return dp[n]
+
+def ordenOptimo(plantaciones):
+    print("Entrada: ",plantaciones)
+    plantaciones2 = [0] * len(plantaciones)
+    orden = copy.copy(plantaciones)
+    menorCosto = float('inf')
+    for i in range(len(plantaciones)):
+        for plantacion in plantaciones:
+            plantacionesBackup = copy.copy(plantaciones)
+            print("Backup: ",plantacionesBackup)
+            tiempoAcumulado = 0
+            plantacionesBackup.remove(plantacion)
+        ##Intentar reemplazar con Sum()
+            for otraPlantacion in plantacionesBackup:
+                tiempoAcumulado += int(otraPlantacion.tiempoRiego)
+            #menorCosto = min(menorCosto,costoRiego(plantacion,tiempoAcumulado))
+            if costoRiego(plantacion,tiempoAcumulado) < menorCosto:
+                plantaEscogida = plantacion
+                menorCosto = costoRiego(plantacion,tiempoAcumulado)
+        
+        orden.insert(0,plantaEscogida)
+        print("Quitando: ", orden[0], " de ", plantaciones)
+        plantaciones.remove(orden[0])
+        plantaEscogida = None
+        menorCosto = float('inf')
+    return orden
+        ##Calcular el costo en ese tiempo acumulado, escoger el de menor costo, hacer recursión con los demás.
 '''
 # Ejemplo de uso
 plantaciones = [

@@ -3,6 +3,7 @@ from tkinter import filedialog
 from openInput import formatInput
 from fuerzaBruta import calcular_riego_optimo
 from Voraz import ordenOptimo
+import copy
 #from Dinamica import riegoOptimo
 
 root = Tk()
@@ -33,6 +34,7 @@ def home():
     btn.grid(column=0, row=1)
 
 def calcularVoraz(finca, result_window):
+    print("Finca de entrada: ",finca)
     resultado = ordenOptimo(finca)
     print(resultado)
     result_lbl = Label(result_window, text="Orden de riego Optimo: " + str(resultado))    
@@ -59,7 +61,7 @@ def pintarFinca(finca):
     btnFuerzaBruta.config(font=("Arial", 20))
     btnFuerzaBruta.grid(column=0, row=2, padx=10, pady=10)
 
-    btnVoraz = Button(root, text = "Voraz", command=lambda: abrirVentanaResultado(finca))
+    btnVoraz = Button(root, text = "Voraz", command=lambda: abrirVentanaResultado(copy.copy(finca)))
     btnVoraz.config(font=("Arial", 20))
     btnVoraz.grid(column=1, row=2, padx=10, pady=10)
 

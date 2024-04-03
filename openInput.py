@@ -52,4 +52,5 @@ def formatInput(filePath):
             finca.append(Plantacion(datos[0], datos[1], datos[2]))
     return finca
 
-print("Finca: ", formatInput('D:/WorkSpace/Proyecto1ADAII/Input.txt'))
+#print("Finca: ", formatInput('Input.txt'))
+print(Dinamica.ordenOptimo(formatInput('Input.txt')))

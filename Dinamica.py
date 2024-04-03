@@ -44,7 +44,7 @@ def costoMinimo(plantaciones):
 
 def ordenOptimo(plantaciones):
     print("Entrada: ",plantaciones)
-    plantaciones2 = [0] * len(plantaciones)
+    plantaciones2 = copy.copy(plantaciones)
     orden = []
     menorCosto = float('inf')
     for i in range(len(plantaciones)):
@@ -57,13 +57,14 @@ def ordenOptimo(plantaciones):
             for otraPlantacion in plantacionesBackup:
                 tiempoAcumulado += int(otraPlantacion.tiempoRiego)
             #menorCosto = min(menorCosto,costoRiego(plantacion,tiempoAcumulado))
-            if costoRiego(plantacion,tiempoAcumulado) < menorCosto:
+            if costoRiego(plantacion,tiempoAcumulado) <= menorCosto:
+                indicePlantaEscogida = plantaciones2.index(plantacion)
                 plantaEscogida = plantacion
                 menorCosto = costoRiego(plantacion,tiempoAcumulado)
         
-        orden.insert(0,plantaEscogida)
-        print("Quitando: ", orden[0], " de ", plantaciones)
-        plantaciones.remove(orden[0])
+        orden.insert(0,indicePlantaEscogida)
+        print("Quitando: ", plantaciones2[orden[0]], " de ", plantaciones)
+        plantaciones.remove(plantaEscogida)
         plantaEscogida = None
         menorCosto = float('inf')
     return orden

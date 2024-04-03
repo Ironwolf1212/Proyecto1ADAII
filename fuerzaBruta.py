@@ -1,54 +1,52 @@
-def calcular_costo_riego(finca, permutacion):
+from itertools import permutations
+from openInput import formatInput
+
+def costoRiego(plantacion, tiempo_transcurrido):
+    """
+    Calcula el costo de riego de una plantación en función del tiempo transcurrido.
+
+    Args:
+        plantacion (tuple): Una tupla que contiene información sobre la plantación.
+            - tiempo_supervivencia (int): Tiempo máximo de supervivencia de la plantación sin riego.
+            - tiempo_regado (int): Tiempo necesario para regar la plantación.
+            - prioridad (int): Prioridad de la plantación.
+        tiempo_transcurrido (int): Tiempo transcurrido desde el inicio.
+
+    Returns:
+        int: El costo de riego de la plantación.
+
+    """
+    tiempo_supervivencia = plantacion.tiempoSuperv
+    tiempo_regado = plantacion.tiempoRiego
+    prioridad = plantacion.prioridad
+    if int(tiempo_transcurrido) + int(tiempo_regado) <= int(tiempo_supervivencia):
+        return int(tiempo_supervivencia) - (int(tiempo_transcurrido) + int(tiempo_regado))
+    else:
+        return int(prioridad) * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
+
+def costoPermutacion(orden):
+    tiempo_transcurrido = 0
     costo_total = 0
-    tiempo_inicio_riego = 0
-    for i in permutacion:
-        tablon_actual = finca[i]
-        tiempo_inicio_riego = max(tiempo_inicio_riego, tablon_actual.tiempoRiego)
-        if tablon_actual.tiempoSuperv - tablon_actual.tiempoRiego >= tiempo_inicio_riego:
-            costo_total += tablon_actual.tiempoSuperv - (tiempo_inicio_riego + tablon_actual.tiempoRiego)
-        else:
-            costo_total += tablon_actual.pFi * ((tiempo_inicio_riego + tablon_actual.tiempoRiego) - tablon_actual.tiempoSuperv)
-        tiempo_inicio_riego += tablon_actual.tiempoRiego
+    for i in range(len(orden)):
+        costo_total += int(costoRiego(orden[i], tiempo_transcurrido))
+        tiempo_transcurrido += int(orden[i].tiempoRiego)
     return costo_total
 
-def calcular_riego_optimo(finca):
-    mejor_permutacion = []
+def ordenOptimoFB(finca):
+    permutaciones = permutations(finca)
+    costos = []
+    mejor_permutacion = None
     mejor_costo = float('inf')
-    n = len(finca)
-    
-    # Generar todas las permutaciones de los tablones
-    def backtrack(permutacion_actual):
-        nonlocal mejor_permutacion, mejor_costo
-        if len(permutacion_actual) == n:
-            costo_actual = calcular_costo_riego(finca, permutacion_actual)
-            if costo_actual < mejor_costo:
-                mejor_costo = costo_actual
-                mejor_permutacion = permutacion_actual[:]
-        else:
-            for i in range(n):
-                if i not in permutacion_actual:
-                    permutacion_actual.append(i)
-                    backtrack(permutacion_actual)
-                    permutacion_actual.pop()
-    
-    backtrack([])
-    return mejor_permutacion
 
-def verificar_solucion_optima(finca, permutacion):
-    costo_fuerza_bruta = calcular_costo_riego(finca, permutacion)
-    # Calcular y comparar con la solución óptima conocida (si está disponible)
-    # Solución óptima conocida
-    # solucion_optima_conocida = ...
-    # costo_optimo_conocido = calcular_costo_riego(finca, solucion_optima_conocida)
-    # Comparar
-    # if costo_fuerza_bruta == costo_optimo_conocido:
-    #     print("La solución producida por fuerza bruta es óptima.")
-    # else:
-    #     print("La solución producida por fuerza bruta NO es óptima.")
-    print("Costo total de riego con fuerza bruta:", costo_fuerza_bruta)
+    for permutacion in permutaciones:
+        costo = costoPermutacion(permutacion)
+        costos.append(costo)
+        if costo < mejor_costo:
+            mejor_permutacion = permutacion
+            mejor_costo = costo
+    return mejor_permutacion, mejor_costo, permutaciones, costos
+       
+finca = formatInput('BateriaPruebas/Prueba30.txt')
+ordenOptimo, costoOptimo, permutaciones, costos = ordenOptimoFB(finca)
 
-# Ejemplo de uso
-# finca_ejemplo = [Tablon(8, 2, 3), Tablon(12, 4, 1), Tablon(10, 3, 2)]
-# programacion_riego_optima = calcular_riego_optimo(finca_ejemplo)
-# print("Programación de riego óptima:", programacion_riego_optima)
-# verificar_solucion_optima(finca_ejemplo, programacion_riego_optima)
+print("Orden óptimo:", ordenOptimo, "Costo óptimo:", costoOptimo)

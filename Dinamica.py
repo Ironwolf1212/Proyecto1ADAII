@@ -1,84 +1,61 @@
-import copy
-
-def costoRiego(plantacion, tiempo_transcurrido):
+def costo_riego_tablon(ts, tr, p, t):
     """
-    Calcula el costo de riego de una plantacion en funcion del tiempo transcurrido.
+    Calcula el costo de riego de un tablón en un tiempo dado.
 
-    Args:
-        plantacion (tuple): Una tupla que contiene informacion sobre la plantacion.
-            - tiempo_supervivencia (int): Tiempo maximo de supervivencia de la plantacion sin riego.
-            - tiempo_regado (int): Tiempo necesario para regar la plantacion.
-            - prioridad (int): Prioridad de la plantacion.
-        tiempo_transcurrido (int): Tiempo transcurrido desde el inicio.
+    Parameters:
+        ts (int): Tiempo de supervivencia del tablón.
+        tr (int): Tiempo de riego del tablón.
+        p (int): Prioridad del tablón.
+        t (int): Tiempo transcurrido desde el inicio.
 
     Returns:
-        int: El costo de riego de la plantacion.
+        int: El costo de riego del tablón.
 
     """
-    tiempo_supervivencia = plantacion.tiempoSuperv
-    tiempo_regado = plantacion.tiempoRiego
-    prioridad = plantacion.prioridad
-    if int(tiempo_transcurrido) + int(tiempo_regado) <= int(tiempo_supervivencia):
-        return int(tiempo_supervivencia) - (int(tiempo_transcurrido) + int(tiempo_regado))
+    if ts - tr >= t:
+        return ts - (t + tr)
     else:
-        return int(prioridad) * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
+        return p * (t + tr - ts)
 
-def costoMinimo(plantaciones):
-    n = len(plantaciones)
-    dp = [float('inf')] * (n + 1)
-    dp[0] = 0
+def programacionOptima(finca):
+    n = len(finca)
 
-    for i in range(1, n + 1):
-        tiempoTranscurrido = 0
-        for j in range(i):
-            #tiempoTranscurrido += int(plantaciones[j - 1].tiempoSuperv)
-            tiempoTranscurrido = sum(int(planta.tiempoSuperv) for planta in plantaciones[j:i])
-            #costo = costoRiego(plantaciones[j - 1], tiempoTranscurrido)
-            costo = sum(costoRiego(planta, tiempoTranscurrido) for planta in plantaciones[j:i])
-            print("El costoo ",j," es ", costo)
-            print("Comparando ",dp[i]," con ",dp[j-1] + costo)
-            dp[i] = min(dp[i], dp[j] + costo)
-        print("El costo ",i," es ",dp[i])
+    crf = [[0] * n for _ in range(n)]
+    for i in range(n):
+        crf[i][i] = costo_riego_tablon(finca[i][0], finca[i][1], finca[i][2], 0)
+    
+    print(crf)
+    
+    for l in range(2, n + 1):
+        for i in range(n - l + 1):
+            j = i + l - 1
+            print(l, i, j)
+            crf[i][j] = float('inf')
+            for k in range(i, j):
+                crf_k = crf[i][k] + costo_riego_tablon(finca[k][0], finca[k][1], finca[k][2], crf[k][j]) #Costo de regar primero la plantacion que se esta evaluando
+                crf_no_k = crf[i][k] + crf[k+1][j] #Costo de no regar primero la plantacion que se esta evaluando
+                crf[i][j] = min(crf[i][j], crf_k, crf_no_k) #Se toma el minimo entre los dos costos
+                print(crf)
+    
+    programacion = []
 
-    return dp[n]
+    def construir_programacion(i, j):
+        if i > j:
+            return
+        elif i == j:
+            programacion.append(i)
+        else:
+            for k in range(i, j):
+                if crf[i][j] == crf[i][k] + costo_riego_tablon(finca[k][0], finca[k][1], finca[k][2], crf[k][j]):
+                    programacion.append(k)
+                    construir_programacion(i, k)
+                    construir_programacion(k + 1, j)
+                    break
 
-def ordenOptimo(plantaciones):
-    print("Entrada: ",plantaciones)
-    plantaciones2 = copy.copy(plantaciones)
-    orden = []
-    menorCosto = float('inf')
-    for i in range(len(plantaciones)):
-        for plantacion in plantaciones:
-            plantacionesBackup = copy.copy(plantaciones)
-            print("Backup: ",plantacionesBackup)
-            tiempoAcumulado = 0
-            plantacionesBackup.remove(plantacion)
-        ##Intentar reemplazar con Sum()
-            for otraPlantacion in plantacionesBackup:
-                tiempoAcumulado += int(otraPlantacion.tiempoRiego)
-            #menorCosto = min(menorCosto,costoRiego(plantacion,tiempoAcumulado))
-            if costoRiego(plantacion,tiempoAcumulado) <= menorCosto:
-                indicePlantaEscogida = plantaciones2.index(plantacion)
-                plantaEscogida = plantacion
-                menorCosto = costoRiego(plantacion,tiempoAcumulado)
-        
-        orden.insert(0,indicePlantaEscogida)
-        print("Quitando: ", plantaciones2[orden[0]], " de ", plantaciones)
-        plantaciones.remove(plantaEscogida)
-        plantaEscogida = None
-        menorCosto = float('inf')
-    return orden
-        ##Calcular el costo en ese tiempo acumulado, escoger el de menor costo, hacer recursión con los demás.
-'''
-# Ejemplo de uso
-plantaciones = [
-    (10, 3, 4),
-    (5, 3, 3),
-    (2, 2, 1),
-    (8, 1, 1),
-    (6, 4, 2)
-]
+    construir_programacion(0, n - 1)
+    return programacion, crf[0][n - 1]
 
-resultado = costoMinimo(plantaciones)
-print("El costo minimo de regar todas las plantaciones es:", resultado)
-'''
+# finca = [(5, 2, 4), (10, 2, 2), (9, 4, 4), (7, 6, 1), (7, 6, 2)]
+# programacion, costo_total = programacionOptima(finca)
+# print("Programacion optima:", programacion)
+# print("Costo total:", costo_total)

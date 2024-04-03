@@ -53,6 +53,6 @@ def formatInput(filePath):
     return finca
 
 #print("Finca: ", formatInput('Input.txt'))
-resultado =Dinamica.ordenOptimo(formatInput('BateriaPruebas/Prueba5.txt'))
-print(resultado)
-print("Costo: ", calcularCostoOrden(formatInput('BateriaPruebas/Prueba5.txt'), resultado))
+# resultado = Dinamica.ordenOptimo(formatInput('BateriaPruebas/Prueba5.txt'))
+# print(resultado)
+# print("Costo: ", calcularCostoOrden(formatInput('BateriaPruebas/Prueba5.txt'), resultado))

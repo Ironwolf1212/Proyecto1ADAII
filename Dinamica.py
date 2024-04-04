@@ -3,17 +3,17 @@ import copy
 
 def costoRiego(plantacion, tiempo_transcurrido):
     """
-    Calcula el costo de riego de una plantaci√≥n en funci√≥n del tiempo transcurrido.
+    Calcula el costo de riego de una plantaciÛn en funciÛn del tiempo transcurrido.
 
     Args:
-        plantacion (tuple): Una tupla que contiene informaci√≥n sobre la plantaci√≥n.
-            - tiempo_supervivencia (int): Tiempo m√°ximo de supervivencia de la plantaci√≥n sin riego.
-            - tiempo_regado (int): Tiempo necesario para regar la plantaci√≥n.
-            - prioridad (int): Prioridad de la plantaci√≥n.
+        plantacion (tuple): Una tupla que contiene informaciÛn sobre la plantaciÛn.
+            - tiempo_supervivencia (int): Tiempo m·ximo de supervivencia de la plantaciÛn sin riego.
+            - tiempo_regado (int): Tiempo necesario para regar la plantaciÛn.
+            - prioridad (int): Prioridad de la plantaciÛn.
         tiempo_transcurrido (int): Tiempo transcurrido desde el inicio.
 
     Returns:
-        int: El costo de riego de la plantaci√≥n.
+        int: El costo de riego de la plantaciÛn.
 
     """
     tiempo_supervivencia = plantacion.tiempoSuperv
@@ -46,16 +46,16 @@ def ordenOptimoDinamica(finca):
         print("Longitud: ", longitud)
         
         ##Calcular los costos para esa longitud
-        #Buscar la forma de no combinarse con los elementos que ya combin√≥... quiz√° haciendo uso de las plantaciones que contiene y buscando en secuencias[0]
+        #Buscar la forma de no combinarse con los elementos que ya combinÛ... quiz· haciendo uso de las plantaciones que contiene y buscando en secuencias[0]
         longitudBackup = copy.copy(longitud)
         
         for secuenciaOptima in longitudBackup:
             print("Secuencia optima: ",secuenciaOptima)
-            ## hallar el costo de poner este de primero y los dem√°s de segundo, posteriormente expulsar del arreglo para evitar repetir
+            ## hallar el costo de poner este de primero y los dem·s de segundo, posteriormente expulsar del arreglo para evitar repetir
             ## probar orden en momento de hallar costo para escoger el minimo
             ## Guardar el tiempo que llevan acumuladas cada secuencia, calcular todas las secuencias de la siguiente longitud en un arreglo temporal y luego meterlas en costo?? no es necesario
-            ## Guardar cada longitud de secuencia en un arreglo diferente??? podr√≠a ser
-            ## Guardar las secuencias de cada longitud en una posici√≥n de un arreglo din√°mico.
+            ## Guardar cada longitud de secuencia en un arreglo diferente??? podrÌa ser
+            ## Guardar las secuencias de cada longitud en una posiciÛn de un arreglo din·mico.
             plantacionesCombinar = copy.copy(secuencias[0])
             for plantaEscogida in secuenciaOptima[0]:
                 print("Planta escogida: ", plantaEscogida)
@@ -84,7 +84,7 @@ def ordenOptimoDinamica(finca):
             for nuevaPlantacion in plantacionesCombinar:
                 print("Plantaciones a anadir: ",secuenciaOptima,nuevaPlantacion)
                 #Marica rece unos 20 padre nuestros para entender este puto condicional oyo?
-                #Basicamente, analiza si es mejor regar secuenciaOptima primero o regar nuevaPlantacion primero, esto lo hace sumando el costo de regar alguno de primero y el costo de regar el otro despu√©s, agarra el menor.
+                #Basicamente, analiza si es mejor regar secuenciaOptima primero o regar nuevaPlantacion primero, esto lo hace sumando el costo de regar alguno de primero y el costo de regar el otro despuÈs, agarra el menor.
                 print("nueva plantacion[0][0]: ",nuevaPlantacion[0][0])
                 if indiceSecuencias == 0:
                     print("Secuencia optima: ", secuenciaOptima)
@@ -124,5 +124,5 @@ for longitud in ordenOptimo:
             print("Secuencia de tamano ",tamano,": ",secuenciaOptima , "\n")
     tamano += 1
 
-#El dia de hoy me acostar√©, con dos personas sabiendo c√≥mo funciona este c√≥digo, estas personas siendo yo y dios.
-#Espero al levantarme ma√±ana, que s√≥lo dios recuerde.
+#El dia de hoy me acostarÈ, con dos personas sabiendo cÛmo funciona este cÛdigo, estas personas siendo yo y dios.
+#Espero al levantarme maÒana, que sÛlo dios recuerde.

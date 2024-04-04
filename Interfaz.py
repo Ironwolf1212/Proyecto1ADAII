@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from openInput import formatInput
-from fuerzaBruta import calcular_riego_optimo
+from fuerzaBruta import ordenOptimoFB
 from Voraz import ordenOptimo
 import copy
 from tkinter import messagebox
@@ -35,6 +35,13 @@ def home():
     lbl.configure(text="Seleccione un archivo de Entrada", justify="center")
     btn.grid(column=0, row=1)
 
+def generarOutput(resultado, costo):
+    with open("resultado.txt", "w") as f:
+        f.write("Costo: " + str(costo) + "\n")
+        f.write("Orden de riego Optimo:\n")
+        for riego in resultado:
+            f.write(str(riego) + "\n")
+
 def calcularVoraz(finca, result_window):
     print("Finca de entrada: ",finca)
     resultado, costo = ordenOptimo(finca)
@@ -45,13 +52,26 @@ def calcularVoraz(finca, result_window):
     result_lbl = Label(result_window, text="Orden de riego Optimo: " + str(resultado))    
     result_lbl.config(font=("Arial", 20))
     result_lbl.pack()
+    result_lbl_2 = Label(result_window, text="Se ha guardado el resultado en el archivo 'resultado.txt'")  
+    result_lbl_2.config(font=("Arial", 20))
+    result_lbl_2.pack()
+    generarOutput(resultado, costo)
 
-    with open("resultado.txt", "w") as f:
-        f.write("Costo: " + str(costo) + "\n")
-        f.write("Orden de riego Optimo:\n")
-        for riego in resultado:
-            f.write(str(riego) + "\n")
-    messagebox.showinfo("Archivo guardado", "La solución se ha guardado en el archivo 'resultado.txt'")
+
+def calcularFB(finca, result_window):
+    print("Finca de entrada: ",finca)
+    resultado, costo = ordenOptimoFB(finca)
+    print(resultado)
+    result_lbl_1 = Label(result_window, text="Costo: " + str(costo))
+    result_lbl_1.config(font=("Arial", 20))
+    result_lbl_1.pack()
+    result_lbl = Label(result_window, text="Orden de riego Optimo: " + str(resultado))    
+    result_lbl.config(font=("Arial", 20))
+    result_lbl.pack()
+    result_lbl_2 = Label(result_window, text="Se ha guardado el resultado en el archivo 'resultado.txt'")  
+    result_lbl_2.config(font=("Arial", 20))
+    result_lbl_2.pack()
+    generarOutput(resultado, costo)
 
 def formatearTextoFinca(finca):
     texto = ""
@@ -69,11 +89,11 @@ def pintarFinca(finca):
     lbl.grid(columnspan=3)
     btn.grid_forget()
 
-    btnFuerzaBruta = Button(root, text = "Fuerza Bruta")
+    btnFuerzaBruta = Button(root, text = "Fuerza Bruta", command=lambda: abrirVentanaResultadoFB(copy.copy(finca)))
     btnFuerzaBruta.config(font=("Arial", 20))
     btnFuerzaBruta.grid(column=0, row=2, padx=10, pady=10)
 
-    btnVoraz = Button(root, text = "Voraz", command=lambda: abrirVentanaResultado(copy.copy(finca)))
+    btnVoraz = Button(root, text = "Voraz", command=lambda: abrirVentanaResultadoVoraz(copy.copy(finca)))
     btnVoraz.config(font=("Arial", 20))
     btnVoraz.grid(column=1, row=2, padx=10, pady=10)
 
@@ -82,11 +102,17 @@ def pintarFinca(finca):
     btnDinamica.grid(column=2, row=2, padx=10, pady=10)
     
 
-def abrirVentanaResultado(finca):
+def abrirVentanaResultadoVoraz(finca):
     result_window = Toplevel(root)
     result_window.title("Resultado Voraz")
     result_window.geometry("600x300")
     calcularVoraz(finca, result_window)
+
+def abrirVentanaResultadoFB(finca):
+    result_window = Toplevel(root)
+    result_window.title("Resultado Fuerza Bruta")
+    result_window.geometry("600x300")
+    calcularFB(finca, result_window)
 
 def Reiniciar():
     home()

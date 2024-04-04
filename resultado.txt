@@ -1,7 +1,10 @@
-Costo: 14
+Costo: 152
 Orden de riego Optimo:
-2
-1
-0
-3
-4
+Plantacion(24, 10, 3)
+Plantacion(20, 4, 4)
+Plantacion(21, 1, 3)
+Plantacion(26, 11, 4)
+Plantacion(25, 5, 2)
+Plantacion(29, 1, 1)
+Plantacion(22, 5, 1)
+Plantacion(29, 24, 3)

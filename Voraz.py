@@ -1,27 +1,5 @@
 import copy
-def costoRiego(plantacion, tiempo_transcurrido):
-    """
-    Calcula el costo de riego de una plantación en función del tiempo transcurrido.
-
-    Args:
-        plantacion (tuple): Una tupla que contiene información sobre la plantación.
-            - tiempo_supervivencia (int): Tiempo máximo de supervivencia de la plantación sin riego.
-            - tiempo_regado (int): Tiempo necesario para regar la plantación.
-            - prioridad (int): Prioridad de la plantación.
-        tiempo_transcurrido (int): Tiempo transcurrido desde el inicio.
-
-    Returns:
-        int: El costo de riego de la plantación.
-
-    """
-    tiempo_supervivencia = plantacion.tiempoSuperv
-    tiempo_regado = plantacion.tiempoRiego
-    prioridad = plantacion.prioridad
-    if int(tiempo_transcurrido) + int(tiempo_regado) <= int(tiempo_supervivencia):
-        return int(tiempo_supervivencia) - (int(tiempo_transcurrido) + int(tiempo_regado))
-    else:
-        return int(prioridad) * ((int(tiempo_transcurrido) + int(tiempo_regado)) - int(tiempo_supervivencia))
-
+from openInput import costoRiego, formatInput
 
 def ordenOptimo(plantaciones):
     """
@@ -57,4 +35,20 @@ def ordenOptimo(plantaciones):
     #Se itera orden y se almacena el índice de cada elemento dentro de plantacionesBackup y orden en ordenFinal
     for i in range(len(orden)):
         ordenFinal[i] = plantacionesBackup.index(orden[i])
-    return ordenFinal, mejor_costo
+    return ordenFinal
+
+def calcularCostoOrden(plantaciones, orden):
+    print(orden)
+    print(plantaciones)
+    tiempoTranscurrido = 0
+    costoTotal = 0
+    for i in range(len(orden)):
+        costoTotal += int(costoRiego(plantaciones[orden[i]], tiempoTranscurrido))
+        print(costoTotal)
+        tiempoTranscurrido += int(plantaciones[orden[i]].tiempoRiego)
+    return costoTotal
+
+finca = formatInput('BateriaPruebas/Prueba3.txt')
+orden = ordenOptimo(copy.copy(finca))
+costo = calcularCostoOrden(finca, orden)
+print("Orden óptimo:", orden, "Costo óptimo:", costo)

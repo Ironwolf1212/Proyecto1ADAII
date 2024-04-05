@@ -5,7 +5,6 @@ from fuerzaBruta import ordenOptimoFB
 from Voraz import ordenOptimo
 import copy
 from tkinter import messagebox
-
 #from Dinamica import riegoOptimo
 
 root = Tk()

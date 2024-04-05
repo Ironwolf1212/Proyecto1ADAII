@@ -37,8 +37,9 @@ def home():
 
 def generarOutput(resultado, costo):
     with open("resultado.txt", "w") as f:
-        f.write("Costo: " + str(costo) + "\n")
-        f.write("Orden de riego Optimo:\n")
+        #f.write("Costo: " + str(costo) + "\n")
+        f.write(str(costo) + "\n")
+        #f.write("Orden de riego Optimo:\n")
         for riego in resultado:
             f.write(str(riego) + "\n")
 

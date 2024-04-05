@@ -3,6 +3,7 @@ from tkinter import filedialog
 from openInput import formatInput
 from fuerzaBruta import ordenOptimoFB
 from Voraz import ordenOptimo
+from Dinamica import ordenOptimoPD
 import copy
 from tkinter import messagebox
 #from Dinamica import riegoOptimo
@@ -72,6 +73,21 @@ def calcularFB(finca, result_window):
     result_lbl_2.pack()
     generarOutput(resultado, costo)
 
+def calcularPD(finca, result_window):
+    print("Finca de entrada: ",finca)
+    resultado, costo = ordenOptimoPD(finca)
+    print(resultado)
+    result_lbl_1 = Label(result_window, text="Costo: " + str(costo))
+    result_lbl_1.config(font=("Arial", 20))
+    result_lbl_1.pack()
+    result_lbl = Label(result_window, text="Orden de riego Optimo: " + str(resultado))    
+    result_lbl.config(font=("Arial", 20))
+    result_lbl.pack()
+    result_lbl_2 = Label(result_window, text="Se ha guardado el resultado en el archivo 'resultado.txt'")  
+    result_lbl_2.config(font=("Arial", 20))
+    result_lbl_2.pack()
+    generarOutput(resultado, costo)
+
 def formatearTextoFinca(finca):
     texto = ""
     if len(finca) <= 10:
@@ -96,7 +112,7 @@ def pintarFinca(finca):
     btnVoraz.config(font=("Arial", 20))
     btnVoraz.grid(column=1, row=2, padx=10, pady=10)
 
-    btnDinamica = Button(root, text = "Dinamica")
+    btnDinamica = Button(root, text = "Dinamica", command=lambda: abrirVentanaResultadoPD(copy.copy(finca)))
     btnDinamica.config(font=("Arial", 20))
     btnDinamica.grid(column=2, row=2, padx=10, pady=10)
     
@@ -112,6 +128,12 @@ def abrirVentanaResultadoFB(finca):
     result_window.title("Resultado Fuerza Bruta")
     result_window.geometry("600x300")
     calcularFB(finca, result_window)
+
+def abrirVentanaResultadoPD(finca):
+    result_window = Toplevel(root)
+    result_window.title("Resultado Fuerza Bruta")
+    result_window.geometry("600x300")
+    calcularPD(finca, result_window)
 
 def Reiniciar():
     home()

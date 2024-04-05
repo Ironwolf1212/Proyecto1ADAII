@@ -16,6 +16,7 @@ def ordenOptimo(finca):
     '''
     costoTotal = 0 #Inicializa el costo total en 0
     orden = [] #Inicializa la lista de orden en vacío
+    fincaBackup = copy.copy(finca)
 
     #Mientras haya plantaciones en la finca
     while len(finca) > 0:
@@ -30,6 +31,9 @@ def ordenOptimo(finca):
 
         #Se elimina de la finca a la plantación que se ha añadido al orden
         finca.pop(index) 
+    print(orden)
+    
+    orden = devolverIndices(orden, fincaBackup)
     return orden, costoTotal
 
 def riegoOptimo(subarreglo):
@@ -60,12 +64,23 @@ def riegoOptimo(subarreglo):
     #Se obtiene el costo mínimo y su índice en el arreglo temporal    
     elemento = min(temp)
     indiceElemento = temp.index(elemento)
+    
     return elemento, indiceElemento
 
+def devolverIndices(plantacionesResultado, finca):
+    print(plantacionesResultado)
+    orden = [0] * len(finca)
+    for i in range(len(plantacionesResultado)):
+        for plantacion in finca:
+            if str(plantacion) == str(plantacionesResultado[i]):
+                orden[i] = finca.index(plantacion)
+    return orden
 
 '''
 PRUEBAS
 '''
-# finca = formatInput('BateriaPruebas/Prueba1.txt')
-# costo, orden = ordenOptimo(copy.deepcopy(finca))
-# print("Orden optimo:", orden, "Costo optimo:", costo)
+finca = formatInput('BateriaPruebas/Prueba1.txt')
+orden, costo = ordenOptimo(copy.deepcopy(finca))
+print("Orden optimo:", orden, "Costo optimo:", costo)
+
+

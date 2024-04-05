@@ -46,11 +46,21 @@ def ordenOptimoFB(finca):
         if costo < mejor_costo:
             mejor_permutacion = permutacion
             mejor_costo = costo
+    mejor_permutacion=devolverIndices(mejor_permutacion,finca)
     return mejor_permutacion, mejor_costo
        
+def devolverIndices(plantacionesResultado, finca):
+    print(plantacionesResultado)
+    orden = [0] * len(finca)
+    for i in range(len(plantacionesResultado)):
+        for plantacion in finca:
+            if str(plantacion) == str(plantacionesResultado[i]):
+                orden[i] = finca.index(plantacion)
+    return orden
+
 '''
 PRUEBAS
 '''
-# finca = formatInput('BateriaPruebas/Prueba1.txt')
-# ordenOptimo, costoOptimo = ordenOptimoFB(finca)
-# print("Orden óptimo:", ordenOptimo, "Costo óptimo:", costoOptimo)
+finca = formatInput('BateriaPruebas/Prueba1.txt')
+ordenOptimo, costoOptimo = ordenOptimoFB(finca)
+print("Orden óptimo:", ordenOptimo, "Costo óptimo:", costoOptimo)
